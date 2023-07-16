@@ -1,0 +1,88 @@
+table {
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    border: 1px solid black;
+    padding: 8px;
+  }
+
+  #pdfButton {
+    display: none;
+  }
+
+  .assistencia-cell-input {
+    width: 50px;
+    /* Defina o tamanho desejado para o campo de entrada numérico */
+    box-sizing: border-box;
+    /* Mantém a largura total do campo, incluindo bordas e padding */
+  }
+
+  .assistencia-col {
+    width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .assistencia-total-cell {
+    font-weight: bold;
+    border-bottom: 2px solid black;
+  }
+
+  .menor-largura-cell {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  #tabela-participantes tr.unchecked {
+    opacity: 0.3;
+  }
+
+  #tabela-participantes tr.unchecked {
+    opacity: 0.5;
+    background-color: white;
+  }
+
+  #tabela-participantes th:first-child,
+  #tabela-participantes td:first-child {
+    width: 59px;
+  }
+
+  #tabela-participantes tr:nth-child(odd) td {
+    background-color: #C9C9C9;
+  }
+
+  #tabela-participantes tr:nth-child(even) td {
+    background-color: #e9e9e9;
+  }
+
+  #tabela-participantes tr:first-child th,
+  #tabela-participantes tr:last-child td {
+    background-color: #A9A9A9;
+  }
+
+  #numero-total-pessoas {
+    font-weight: bold;
+    text-align: center;
+  }
+
+  #total-pessoas-label {
+    font-weight: bold;
+    text-align: center;
+  }
+
+  /* Esconder a primeira coluna da tabela */
+  #tabela-participantes th:first-child,
+  #tabela-participantes td:first-child {
+    display: none;
+  }
