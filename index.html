@@ -90,73 +90,75 @@
         return [...participante];
       });
       var nomesAdicionados = {}; // Objeto para armazenar os nomes que já foram adicionados
-participantes.forEach(function (participante) {
-  var nome = participante[1];
-  var assistencia = participante[5];
+      participantes.forEach(function (participante) {
+        var nome = participante[1];
+        var assistencia = participante[5];
 
-  // Verificar se o nome e a assistência estão preenchidos corretamente
-  if (
-    nome &&
-    assistencia &&
-    nome !== 'User Name' &&
-    assistencia !== '1.Quantas pessoas estarão assistindo a reunião?' &&
-    nome !== 'Câmera Tribuna' &&
-    nome !== 'Câmera tribuna' &&
-    nome !== 'Mesa de som' &&
-    nome !== 'Tablet Tribuna'
-  ) {
-    var linha = document.createElement('tr');
-    if (!assistencia.includes('pessoa') || nomesAdicionados[nome]) {
-      // Desmarcar a linha se o nome já foi adicionado anteriormente
-      linha.appendChild(
-        createCell(
-          'td',
-          '<input type="checkbox" class="participante-checkbox">',
-          false
-        )
-      );
-      linha.classList.add('unchecked');
-      assistencia = 'Já informou'; // Alterar o valor da assistência para 0
-    } else {
-      linha.appendChild(
-        createCell(
-          'td',
-          '<input type="checkbox" class="participante-checkbox" checked>',
-          false
-        )
-      );
-      nomesAdicionados[nome] = true; // Armazenar o nome como adicionado
-    }
-    linha.appendChild(createCell('td', nome, true)).classList.add(
-      'nome-participante'
-    );
-    if (assistencia.startsWith('Já informei a assistência')) {
-      assistencia = 'Já Informou';
-    }
+        // Verificar se o nome e a assistência estão preenchidos corretamente
+        if (
+          nome &&
+          assistencia &&
+          nome !== 'User Name' &&
+          assistencia !== '1.Quantas pessoas estarão assistindo a reunião?' &&
+          nome !== 'Câmera Tribuna' &&
+          nome !== 'Câmera tribuna' &&
+          nome !== 'Camera tribuna' &&
+          nome !== 'Camera Tribuna' &&
+          nome !== 'Mesa de som' &&
+          nome !== 'Tablet Tribuna'
+        ) {
+          var linha = document.createElement('tr');
+          if (!assistencia.includes('pessoa') || nomesAdicionados[nome]) {
+            // Desmarcar a linha se o nome já foi adicionado anteriormente
+            linha.appendChild(
+              createCell(
+                'td',
+                '<input type="checkbox" class="participante-checkbox">',
+                false
+              )
+            );
+            linha.classList.add('unchecked');
+            assistencia = 'Já informou'; // Alterar o valor da assistência para 0
+          } else {
+            linha.appendChild(
+              createCell(
+                'td',
+                '<input type="checkbox" class="participante-checkbox" checked>',
+                false
+              )
+            );
+            nomesAdicionados[nome] = true; // Armazenar o nome como adicionado
+          }
+          linha.appendChild(createCell('td', nome, true)).classList.add(
+            'nome-participante'
+          );
+          if (assistencia.startsWith('Já informei a assistência')) {
+            assistencia = 'Já Informou';
+          }
 
-    // Adicionar um evento de clique (click) para o nome do participante
-    linha.querySelector('.nome-participante').addEventListener('click', function () {
-      var checkbox = linha.querySelector('.participante-checkbox');
-      checkbox.checked = !checkbox.checked;
-      if (checkbox.checked) {
-        linha.classList.remove('unchecked');
-      } else {
-        linha.classList.add('unchecked');
-      }
-      atualizarNumeroTotalPessoas();
-    });
+          // Adicionar um evento de clique (click) para o nome do participante
+          linha.querySelector('.nome-participante').addEventListener('click', function () {
+            var checkbox = linha.querySelector('.participante-checkbox');
+            checkbox.checked = !checkbox.checked;
+            if (checkbox.checked) {
+              linha.classList.remove('unchecked');
+            } else {
+              linha.classList.add('unchecked');
+            }
+            atualizarNumeroTotalPessoas();
+          });
 
-    // Adicionar um evento de clique (click) para a célula de assistência
-    var assistenciaCell = createCell('td', assistencia, true);
-    assistenciaCell.addEventListener('click', function () {
-      criarCampoDeEntrada(this);
-    });
+          // Adicionar um evento de clique (click) para a célula de assistência
+          var assistenciaCell = createCell('td', assistencia, true);
+          assistenciaCell.addEventListener('click', function () {
+            criarCampoDeEntrada(this);
+          });
 
-    linha.appendChild(assistenciaCell);
+          linha.appendChild(assistenciaCell);
 
-    tabela.appendChild(linha);
-  }
-});
+          tabela.appendChild(linha);
+        }
+      });
 
 
       var numeroTotalPessoas = calcularNumeroTotalPessoas(participantes);
@@ -296,22 +298,22 @@ participantes.forEach(function (participante) {
 
     // Função para atualizar o número total de pessoas selecionadas
     function atualizarNumeroTotalPessoas() {
-  var checkboxes = document.querySelectorAll('.participante-checkbox');
-  var numeroTotalPessoasElement = document.getElementById('numero-total-pessoas');
-  var numeroTotalPessoas = 0;
+      var checkboxes = document.querySelectorAll('.participante-checkbox');
+      var numeroTotalPessoasElement = document.getElementById('numero-total-pessoas');
+      var numeroTotalPessoas = 0;
 
-  for (var i = 0; i < checkboxes.length; i++) {
-    var checkbox = checkboxes[i];
-    if (checkbox.checked) {
-      var row = checkbox.parentNode.parentNode;
-      var assistenciaCell = row.cells[2];
-      var assistenciaValue = parseInt(assistenciaCell.textContent) || 0;
-      numeroTotalPessoas += assistenciaValue;
+      for (var i = 0; i < checkboxes.length; i++) {
+        var checkbox = checkboxes[i];
+        if (checkbox.checked) {
+          var row = checkbox.parentNode.parentNode;
+          var assistenciaCell = row.cells[2];
+          var assistenciaValue = parseInt(assistenciaCell.textContent) || 0;
+          numeroTotalPessoas += assistenciaValue;
+        }
+      }
+
+      numeroTotalPessoasElement.textContent = numeroTotalPessoas;
     }
-  }
-
-  numeroTotalPessoasElement.textContent = numeroTotalPessoas;
-}
 
 
     // Adicione um evento de clique ao botão personalizado
@@ -354,76 +356,76 @@ participantes.forEach(function (participante) {
       // Verificar se há participantes selecionados antes de criar o PDF
       if (selectedParticipantes.length > 0) {
         var docDefinition = {
-  content: [
-    {
-      table: {
-        widths: selectedParticipantes.length > 33 ? ['56%', '46%'] : ['70%', '32%'],
-        body: [
-          [{ text: 'Nomes pelo Zoom', style: 'tableHeader' }, { text: 'Assistência', style: 'tableHeader' }],
-          ...selectedParticipantes.map(function (participante) {
-            if (participante.selecionado) {
-              var nome = participante.nome.length > (selectedParticipantes.length >= 25 ? 33 : 24) ? participante.nome.substring(0, (selectedParticipantes.length >= 25 ? 33 : 24)) : participante.nome;
-              var assistencia = participante.assistencia.length > (selectedParticipantes.length >= 25 ? 33 : 24) ? participante.assistencia.substring(0, (selectedParticipantes.length >= 25 ? 33 : 24)) : participante.assistencia;
+          content: [
+            {
+              table: {
+                widths: selectedParticipantes.length > 33 ? ['56%', '46%'] : ['70%', '32%'],
+                body: [
+                  [{ text: 'Nomes pelo Zoom', style: 'tableHeader' }, { text: 'Assistência', style: 'tableHeader' }],
+                  ...selectedParticipantes.map(function (participante) {
+                    if (participante.selecionado) {
+                      var nome = participante.nome.length > (selectedParticipantes.length >= 25 ? 33 : 24) ? participante.nome.substring(0, (selectedParticipantes.length >= 25 ? 33 : 24)) : participante.nome;
+                      var assistencia = participante.assistencia.length > (selectedParticipantes.length >= 25 ? 33 : 24) ? participante.assistencia.substring(0, (selectedParticipantes.length >= 25 ? 33 : 24)) : participante.assistencia;
 
-              if (selectedParticipantes.length > 27) {
-                nome = nome.substring(0, 35);
-                assistencia = assistencia.substring(0, 15);
+                      if (selectedParticipantes.length > 27) {
+                        nome = nome.substring(0, 35);
+                        assistencia = assistencia.substring(0, 15);
+                      }
+
+                      return [{ text: nome, style: 'tableCell' }, { text: assistencia, style: ['tableCell', 'centerAligned'] }];
+                    }
+                  }).filter(Boolean),
+                  [{ text: 'Assistência Total', style: 'tableHeader' }, { text: document.getElementById('numero-total-pessoas').textContent, style: 'tableHeader' }]
+                ]
+              },
+              layout: {
+                fillColor: function (rowIndex, node, columnIndex) {
+                  if (rowIndex === 0 || rowIndex === node.table.body.length - 1) {
+                    return '#A9A9A9';
+                  } else if (rowIndex % 2 !== 0) {
+                    return '#C9C9C9';
+                  } else {
+                    return '#e9e9e9';
+                  }
+                }
               }
-
-              return [{ text: nome, style: 'tableCell' }, { text: assistencia, style: ['tableCell', 'centerAligned'] }];
             }
-          }).filter(Boolean),
-          [{ text: 'Assistência Total', style: 'tableHeader' }, { text: document.getElementById('numero-total-pessoas').textContent, style: 'tableHeader' }]
-        ]
-      },
-      layout: {
-        fillColor: function (rowIndex, node, columnIndex) {
-          if (rowIndex === 0 || rowIndex === node.table.body.length - 1) {
-            return '#A9A9A9';
-          } else if (rowIndex % 2 !== 0) {
-            return '#C9C9C9';
-          } else {
-            return '#e9e9e9';
+          ],
+          styles: {
+            tableHeader: {
+              fontSize: calcularTamanhoFonte() + 1,
+              bold: true,
+              alignment: 'center'
+            },
+            tableCell: {
+              fontSize: calcularTamanhoFonte() + 1,
+              alignment: 'center'
+            }
           }
-        }
-      }
-    }
-  ],
-  styles: {
-    tableHeader: {
-      fontSize: calcularTamanhoFonte() + 1,
-      bold: true,
-      alignment: 'center'
-    },
-    tableCell: {
-      fontSize: calcularTamanhoFonte() + 1,
-      alignment: 'center'
-    }
-  }
-};
+        };
 
         // Obter o número de participantes selecionados e calcular a altura da linha
         var numParticipantes = selectedParticipantes.length;
-var alturaLinha = calcularAlturaLinha();
+        var alturaLinha = calcularAlturaLinha();
 
-// Calcular a altura necessária para a tabela baseada no número de participantes selecionados
-var alturaNecessaria = alturaLinha * numParticipantes;
+        // Calcular a altura necessária para a tabela baseada no número de participantes selecionados
+        var alturaNecessaria = alturaLinha * numParticipantes;
 
-// Verificar se a altura necessária é maior que a altura da página
-if (alturaNecessaria > alturaPagina) {
-  // Aumentar o tamanho da página para acomodar a tabela
-  docDefinition.pageSize = { width: mmToPt(210), height: mmToPt(297) + alturaNecessaria };
-}
+        // Verificar se a altura necessária é maior que a altura da página
+        if (alturaNecessaria > alturaPagina) {
+          // Aumentar o tamanho da página para acomodar a tabela
+          docDefinition.pageSize = { width: mmToPt(210), height: mmToPt(297) + alturaNecessaria };
+        }
 
-// Formatar a data atual como dd/mm/yy
-var dataAtual = new Date();
-var dia = dataAtual.getDate().toString().padStart(2, '0');
-var mes = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
-var ano = dataAtual.getFullYear().toString().substring(2);
-var dataFormatada = dia + '/' + mes + '/' + ano;
+        // Formatar a data atual como dd/mm/yy
+        var dataAtual = new Date();
+        var dia = dataAtual.getDate().toString().padStart(2, '0');
+        var mes = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
+        var ano = dataAtual.getFullYear().toString().substring(2);
+        var dataFormatada = dia + '/' + mes + '/' + ano;
 
-// Chamar a função para criar o PDF com as configurações atualizadas
-pdfMake.createPdf(docDefinition).download('enquete_' + dataFormatada + '.pdf');
+        // Chamar a função para criar o PDF com as configurações atualizadas
+        pdfMake.createPdf(docDefinition).download('enquete_' + dataFormatada + '.pdf');
       }
     });
 
@@ -451,43 +453,43 @@ pdfMake.createPdf(docDefinition).download('enquete_' + dataFormatada + '.pdf');
 
     // Função para calcular a altura da linha baseada no número de participantes selecionados
     function calcularAlturaLinha() {
-  // Pegar o número de participantes selecionados
-  var numParticipantes = getSelectedParticipantes().length;
+      // Pegar o número de participantes selecionados
+      var numParticipantes = getSelectedParticipantes().length;
 
-  // Pegar as margens da página em pontos
-  var margemSuperior = 5;
-  var margemInferior = 5;
-  // Calcular a altura disponível para a tabela
-  var alturaTabela = alturaPagina - margemSuperior - margemInferior;
+      // Pegar as margens da página em pontos
+      var margemSuperior = 5;
+      var margemInferior = 5;
+      // Calcular a altura disponível para a tabela
+      var alturaTabela = alturaPagina - margemSuperior - margemInferior;
 
-  // Calcular a altura ideal para cada linha
-  var alturaLinha = alturaTabela / numParticipantes;
+      // Calcular a altura ideal para cada linha
+      var alturaLinha = alturaTabela / numParticipantes;
 
-  // Verificar se a altura da linha é menor que a altura mínima permitida
-  var alturaMinima = 5;
-  if (alturaLinha < alturaMinima) {
-    alturaLinha = alturaMinima;
-  }
+      // Verificar se a altura da linha é menor que a altura mínima permitida
+      var alturaMinima = 5;
+      if (alturaLinha < alturaMinima) {
+        alturaLinha = alturaMinima;
+      }
 
-  return alturaLinha;
-}
+      return alturaLinha;
+    }
 
-// Função para calcular o tamanho da fonte baseada na altura da linha
-function calcularTamanhoFonte() {
-  // Pegar a altura da linha
-  var alturaLinha = calcularAlturaLinha();
+    // Função para calcular o tamanho da fonte baseada na altura da linha
+    function calcularTamanhoFonte() {
+      // Pegar a altura da linha
+      var alturaLinha = calcularAlturaLinha();
 
-  // Calcular o tamanho ideal para a fonte
-  var tamanhoFonte = alturaLinha * 0.4; // Reduzir o fator de escala para diminuir o tamanho da fonte
+      // Calcular o tamanho ideal para a fonte
+      var tamanhoFonte = alturaLinha * 0.4; // Reduzir o fator de escala para diminuir o tamanho da fonte
 
-  // Verificar se o tamanho da fonte é menor que o tamanho mínimo permitido
-  var tamanhoMinimo = 8;
-  if (tamanhoFonte < tamanhoMinimo) {
-    tamanhoFonte = tamanhoMinimo;
-  }
+      // Verificar se o tamanho da fonte é menor que o tamanho mínimo permitido
+      var tamanhoMinimo = 8;
+      if (tamanhoFonte < tamanhoMinimo) {
+        tamanhoFonte = tamanhoMinimo;
+      }
 
-  return tamanhoFonte;
-}
+      return tamanhoFonte;
+    }
   </script>
 </body>
 
