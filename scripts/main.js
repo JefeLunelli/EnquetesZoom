@@ -67,6 +67,7 @@ function handleButtonClick() {
     this.style.backgroundColor = '';
   }, 1000);
 }
+});
 
 window.addEventListener('DOMContentLoaded', function () {
   var dateContainer = document.getElementById('dateContainer');
@@ -106,4 +107,4 @@ var numCelulas = tabela.querySelectorAll("td").length;
 if (numCelulas -= 37) {
   // Adiciona uma classe à tabela para aplicar estilos condicionalmente
   tabela.classList.add("tabela-ajustada");
-}})});
+}});
