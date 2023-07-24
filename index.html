@@ -6,6 +6,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/pdfmake.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/vfs_fonts.js"></script>
   <script src="scripts/main.js"></script>
+  <meta name="theme-color" content="#a9a9a9">
+  <link rel="icon" type="image/png" href="styles/img/imagem_2023-07-24_162851429.png">
 </head>
 
 <body>
@@ -431,27 +433,27 @@ button.addEventListener('click', function() {
         }
 
         // Formatar a data atual como dd/mm/yy
-        var dataAtual = new Date();
-        var dia = dataAtual.getDate().toString().padStart(2, '0');
-        var mes = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
-        var ano = dataAtual.getFullYear().toString().substring(2);
-        var dataFormatada = dia + '/' + mes + '/' + ano;
+var dataAtual = new Date();
+var dia = dataAtual.getDate().toString().padStart(2, '0');
+var mes = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
+var ano = dataAtual.getFullYear().toString().substring(2);
+var dataFormatada = dia + '_' + mes + '_' + ano;
 
        // Chamar a função para criar o PDF com as configurações atualizadas
     pdfMake.createPdf(docDefinition).getBuffer(function(buffer) {
       var blob = new Blob([buffer], {type: 'application/pdf'});
       var file = new File([blob], 'enquete_' + dataFormatada + '.pdf', {type: 'application/pdf'});
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        navigator.share({
-          files: [file],
-          title: 'Nome do arquivo',
-          text: 'Descrição do arquivo'
-        })
-        .then(() => console.log('Arquivo compartilhado com sucesso'))
-        .catch((error) => console.log('Erro ao compartilhar o arquivo', error));
-      } else {
-        console.log('Compartilhamento de arquivos não suportado pelo navegador');
-      }
+  navigator.share({
+    files: [file],
+    title: 'Enquete ' + dataFormatada,
+    text: 'Arquivo de enquete gerado em ' + dataFormatada
+  })
+  .then(() => console.log('Arquivo compartilhado com sucesso'))
+  .catch((error) => console.log('Erro ao compartilhar o arquivo', error));
+} else {
+  console.log('Compartilhamento de arquivos não suportado pelo navegador');
+}
     });
   }
 });
