@@ -31,7 +31,20 @@
   <button id="pdfButton">Gerar PDF</button>
 
   <script>
+ // Selecionar o botão pelo seu seletor CSS
+ var button = document.querySelector('.botao-inicial');
 
+// Adicionar um evento de clique ao botão
+button.addEventListener('click', function() {
+  // Alterar a cor do botão para cinza escuro
+  this.style.backgroundColor = '#ccc';
+
+  // Aguardar 1 segundo (1000 milissegundos) antes de executar a função
+  setTimeout(() => {
+    // Alterar a cor do botão de volta ao normal
+    this.style.backgroundColor = '';
+  }, 1000);
+});
     // Variável para guardar a altura da página A4 em pontosack
     var alturaPagina = mmToPt(400);
     var participantesOriginal = [];
@@ -424,10 +437,24 @@
         var ano = dataAtual.getFullYear().toString().substring(2);
         var dataFormatada = dia + '/' + mes + '/' + ano;
 
-        // Chamar a função para criar o PDF com as configurações atualizadas
-        pdfMake.createPdf(docDefinition).download('enquete_' + dataFormatada + '.pdf');
+       // Chamar a função para criar o PDF com as configurações atualizadas
+    pdfMake.createPdf(docDefinition).getBuffer(function(buffer) {
+      var blob = new Blob([buffer], {type: 'application/pdf'});
+      var file = new File([blob], 'enquete_' + dataFormatada + '.pdf', {type: 'application/pdf'});
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({
+          files: [file],
+          title: 'Nome do arquivo',
+          text: 'Descrição do arquivo'
+        })
+        .then(() => console.log('Arquivo compartilhado com sucesso'))
+        .catch((error) => console.log('Erro ao compartilhar o arquivo', error));
+      } else {
+        console.log('Compartilhamento de arquivos não suportado pelo navegador');
       }
     });
+  }
+});
 
     // Função para obter os participantes selecionados
     function getSelectedParticipantes() {
