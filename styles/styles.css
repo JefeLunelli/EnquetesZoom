@@ -322,7 +322,6 @@ body.tabela-exibida #tabela-participantes {
   overflow: auto;
 }
 
-
 /* Tamanho das letras e célula */
 #tabela-participantes th,
 #tabela-participantes td {
@@ -399,6 +398,7 @@ body.tabela-exibida #tabela-participantes {
     margin-left: 0;
   }
 }
+
 
 
 /* Botões */
