@@ -33,20 +33,20 @@
   <button id="pdfButton">Gerar PDF</button>
 
   <script>
- // Selecionar o botão pelo seu seletor CSS
- var button = document.querySelector('.botao-inicial');
+    // Selecionar o botão pelo seu seletor CSS
+    var button = document.querySelector('.botao-inicial');
 
-// Adicionar um evento de clique ao botão
-button.addEventListener('click', function() {
-  // Alterar a cor do botão para cinza escuro
-  this.style.backgroundColor = '#ccc';
+    // Adicionar um evento de clique ao botão
+    button.addEventListener('click', function () {
+      // Alterar a cor do botão para cinza escuro
+      this.style.backgroundColor = '#ccc';
 
-  // Aguardar 1 segundo (1000 milissegundos) antes de executar a função
-  setTimeout(() => {
-    // Alterar a cor do botão de volta ao normal
-    this.style.backgroundColor = '';
-  }, 1000);
-});
+      // Aguardar 1 segundo (1000 milissegundos) antes de executar a função
+      setTimeout(() => {
+        // Alterar a cor do botão de volta ao normal
+        this.style.backgroundColor = '';
+      }, 1000);
+    });
     // Variável para guardar a altura da página A4 em pontosack
     var alturaPagina = mmToPt(400);
     var participantesOriginal = [];
@@ -102,78 +102,84 @@ button.addEventListener('click', function() {
       tabela.appendChild(cabecalho);
 
       participantesOriginal = participantes.map(function (participante) {
-        return [...participante];
-      });
-      var nomesAdicionados = {}; // Objeto para armazenar os nomes que já foram adicionados
-      participantes.forEach(function (participante) {
-        var nome = participante[1];
-        var assistencia = participante[5];
+  return [...participante];
+});
+var nomesAdicionados = {}; // Objeto para armazenar os nomes que já foram adicionados
 
-        // Verificar se o nome e a assistência estão preenchidos corretamente
-        if (
-          nome &&
-          assistencia &&
-          nome !== 'User Name' &&
-          assistencia !== '1.Quantas pessoas estarão assistindo a reunião?' &&
-          nome !== 'Câmera Tribuna' &&
-          nome !== 'Câmera tribuna' &&
-          nome !== 'Camera tribuna' &&
-          nome !== 'Camera Tribuna' &&
-          nome !== 'Mesa de som' &&
-          nome !== 'Tablet Tribuna'
-        ) {
-          var linha = document.createElement('tr');
-          if (!assistencia.includes('pessoa') || nomesAdicionados[nome]) {
-            // Desmarcar a linha se o nome já foi adicionado anteriormente
-            linha.appendChild(
-              createCell(
-                'td',
-                '<input type="checkbox" class="participante-checkbox">',
-                false
-              )
-            );
-            linha.classList.add('unchecked');
-            assistencia = 'Já informou'; // Alterar o valor da assistência para 0
-          } else {
-            linha.appendChild(
-              createCell(
-                'td',
-                '<input type="checkbox" class="participante-checkbox" checked>',
-                false
-              )
-            );
-            nomesAdicionados[nome] = true; // Armazenar o nome como adicionado
-          }
-          linha.appendChild(createCell('td', nome, true)).classList.add(
-            'nome-participante'
-          );
-          if (assistencia.startsWith('Já informei a assistência')) {
-            assistencia = 'Já Informou';
-          }
+// Alterar os índices das colunas para corresponder ao novo formato do arquivo CSV
+var nomeIndex = 1;
+var assistenciaIndex = 4;
 
-          // Adicionar um evento de clique (click) para o nome do participante
-          linha.querySelector('.nome-participante').addEventListener('click', function () {
-            var checkbox = linha.querySelector('.participante-checkbox');
-            checkbox.checked = !checkbox.checked;
-            if (checkbox.checked) {
-              linha.classList.remove('unchecked');
-            } else {
-              linha.classList.add('unchecked');
-            }
-            atualizarNumeroTotalPessoas();
-          });
+participantes.forEach(function (participante) {
+  var nome = participante[nomeIndex];
+  var assistencia = participante[assistenciaIndex];
 
-          // Adicionar um evento de clique (click) para a célula de assistência
-          var assistenciaCell = createCell('td', assistencia, true);
-          assistenciaCell.addEventListener('click', function () {
-            criarCampoDeEntrada(this);
-          });
+  // Verificar se o nome e a assistência estão preenchidos corretamente
+  if (
+    nome &&
+    assistencia &&
+    nome !== 'User Name' &&
+    assistencia !== 'Quantas pessoas estão assistindo?' &&
+    nome !== 'Câmera Tribuna' &&
+    nome !== 'Câmera tribuna' &&
+    nome !== 'Camera tribuna' &&
+    nome !== 'Camera Tribuna' &&
+    nome !== 'Mesa de som' &&
+    nome !== 'Tablet Tribuna'
+  ) {
+    var linha = document.createElement('tr');
+    if (!assistencia.includes('pessoa') || nomesAdicionados[nome]) {
+      // Desmarcar a linha se o nome já foi adicionado anteriormente
+      linha.appendChild(
+        createCell(
+          'td',
+          '<input type="checkbox" class="participante-checkbox">',
+          false
+        )
+      );
+      linha.classList.add('unchecked');
+      assistencia = 'Já informou'; // Alterar o valor da assistência para 0
+    } else {
+      linha.appendChild(
+        createCell(
+          'td',
+          '<input type="checkbox" class="participante-checkbox" checked>',
+          false
+        )
+      );
+      nomesAdicionados[nome] = true; // Armazenar o nome como adicionado
+    }
+    linha.appendChild(createCell('td', nome, true)).classList.add(
+      'nome-participante'
+    );
+    if (assistencia.startsWith('Já informei a assistência')) {
+      assistencia = 'Já Informou';
+    }
 
-          linha.appendChild(assistenciaCell);
+    // Adicionar um evento de clique (click) para o nome do participante
+    linha.querySelector('.nome-participante').addEventListener('click', function () {
+      var checkbox = linha.querySelector('.participante-checkbox');
+      checkbox.checked = !checkbox.checked;
+      if (checkbox.checked) {
+        linha.classList.remove('unchecked');
+      } else {
+        linha.classList.add('unchecked');
+      }
+      atualizarNumeroTotalPessoas();
+    });
 
-          tabela.appendChild(linha);
-        }
-      });
+    // Adicionar um evento de clique (click) para a célula de assistência
+    var assistenciaCell = createCell('td', assistencia, true);
+    assistenciaCell.addEventListener('click', function () {
+      criarCampoDeEntrada(this);
+    });
+
+    linha.appendChild(assistenciaCell);
+
+    tabela.appendChild(linha);
+  }
+});
+
 
 
       var numeroTotalPessoas = calcularNumeroTotalPessoas(participantes);
@@ -342,30 +348,26 @@ button.addEventListener('click', function() {
 
     // Adicione um ouvinte de evento de alteração ao elemento fileInput
     document.getElementById('fileInput').addEventListener('change', function () {
-  if (this.files.length > 0) {
-    var file = this.files[0];
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      var csvContent = e.target.result;
-      var lines = csvContent.split('\n');
-      var participantes = [];
+      if (this.files.length > 0) {
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var csvContent = e.target.result;
+          var lines = csvContent.split('\n');
+          var participantes = [];
 
-      // Encontrar a linha que começa com "Informação Assistência"
-      var startIndex = lines.findIndex(line => line.startsWith('Informação Assistência'));
-      startIndex += 2; // Pular a linha do cabeçalho
+          // Pular as primeiras 12 linhas, pois elas não contêm dados dos participantes
+          for (var i = 12; i < lines.length; i++) {
+            // Usar vírgula como separador ao dividir a linha em células
+            var row = lines[i].split(',');
+            participantes.push(row);
+          }
 
-      for (var i = startIndex; i < lines.length; i++) {
-        // Use vírgula como separador ao dividir a linha em células
-        var row = lines[i].split(',');
-        if (row.length < 5) break; // Parar quando chegar ao fim da seção "Informação Assistência"
-        participantes.push(row);
+          exibirParticipantes(participantes);
+        };
+        reader.readAsText(file);
       }
-
-      exibirParticipantes(participantes);
-    };
-    reader.readAsText(file);
-  }
-});
+    });
 
     document.getElementById('pdfButton').classList.add('button');
 
@@ -438,30 +440,30 @@ button.addEventListener('click', function() {
         }
 
         // Formatar a data atual como dd/mm/yy
-var dataAtual = new Date();
-var dia = dataAtual.getDate().toString().padStart(2, '0');
-var mes = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
-var ano = dataAtual.getFullYear().toString().substring(2);
-var dataFormatada = dia + '_' + mes + '_' + ano;
+        var dataAtual = new Date();
+        var dia = dataAtual.getDate().toString().padStart(2, '0');
+        var mes = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
+        var ano = dataAtual.getFullYear().toString().substring(2);
+        var dataFormatada = dia + '_' + mes + '_' + ano;
 
-       // Chamar a função para criar o PDF com as configurações atualizadas
-    pdfMake.createPdf(docDefinition).getBuffer(function(buffer) {
-      var blob = new Blob([buffer], {type: 'application/pdf'});
-      var file = new File([blob], 'enquete_' + dataFormatada + '.pdf', {type: 'application/pdf'});
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-  navigator.share({
-    files: [file],
-    title: 'Enquete ' + dataFormatada,
-    text: 'Arquivo de enquete gerado em ' + dataFormatada
-  })
-  .then(() => console.log('Arquivo compartilhado com sucesso'))
-  .catch((error) => console.log('Erro ao compartilhar o arquivo', error));
-} else {
-  console.log('Compartilhamento de arquivos não suportado pelo navegador');
-}
+        // Chamar a função para criar o PDF com as configurações atualizadas
+        pdfMake.createPdf(docDefinition).getBuffer(function (buffer) {
+          var blob = new Blob([buffer], { type: 'application/pdf' });
+          var file = new File([blob], 'enquete_' + dataFormatada + '.pdf', { type: 'application/pdf' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({
+              files: [file],
+              title: 'Enquete ' + dataFormatada,
+              text: 'Arquivo de enquete gerado em ' + dataFormatada
+            })
+              .then(() => console.log('Arquivo compartilhado com sucesso'))
+              .catch((error) => console.log('Erro ao compartilhar o arquivo', error));
+          } else {
+            console.log('Compartilhamento de arquivos não suportado pelo navegador');
+          }
+        });
+      }
     });
-  }
-});
 
     // Função para obter os participantes selecionados
     function getSelectedParticipantes() {
