@@ -342,25 +342,30 @@ button.addEventListener('click', function() {
 
     // Adicione um ouvinte de evento de alteração ao elemento fileInput
     document.getElementById('fileInput').addEventListener('change', function () {
-      if (this.files.length > 0) {
-        var file = this.files[0];
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          var csvContent = e.target.result;
-          var lines = csvContent.split('\n');
-          var participantes = [];
+  if (this.files.length > 0) {
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var csvContent = e.target.result;
+      var lines = csvContent.split('\n');
+      var participantes = [];
 
-          for (var i = 0; i < lines.length; i++) {
-            // Use vírgula como separador ao dividir a linha em células
-            var row = lines[i].split(',');
-            participantes.push(row);
-          }
+      // Encontrar a linha que começa com "Informação Assistência"
+      var startIndex = lines.findIndex(line => line.startsWith('Informação Assistência'));
+      startIndex += 2; // Pular a linha do cabeçalho
 
-          exibirParticipantes(participantes);
-        };
-        reader.readAsText(file);
+      for (var i = startIndex; i < lines.length; i++) {
+        // Use vírgula como separador ao dividir a linha em células
+        var row = lines[i].split(',');
+        if (row.length < 5) break; // Parar quando chegar ao fim da seção "Informação Assistência"
+        participantes.push(row);
       }
-    });
+
+      exibirParticipantes(participantes);
+    };
+    reader.readAsText(file);
+  }
+});
 
     document.getElementById('pdfButton').classList.add('button');
 
