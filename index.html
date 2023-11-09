@@ -358,7 +358,6 @@ participantes.forEach(function (participante) {
           // Pular as primeiras 12 linhas, pois elas não contêm dados dos participantes
           for (var i = 12; i < lines.length; i++) {
             // Usar vírgula como separador ao dividir a linha em células
-            var row = lines[i].split(',');
             participantes.push(row);
           }
 
