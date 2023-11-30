@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pdfmake": "^0.2.7"
+    "pdfmake": "^0.2.8"
   }
 }
