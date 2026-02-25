@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "pdfmake": "^0.2.7"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
