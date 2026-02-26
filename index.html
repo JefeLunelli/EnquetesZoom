@@ -32,24 +32,27 @@
   <button id="pdfButton">Gerar PDF</button>
 
   <script>
-    // Selecionar o botão pelo seu seletor CSS
-    var button = document.querySelector('.botao-inicial');
+  // FUNÇÃO QUE ESTAVA FALTANDO
+  function mmToPt(mm) {
+    return mm * 2.83465;
+  }
 
-    // Adicionar um evento de clique ao botão
-    button.addEventListener('click', function () {
-      // Alterar a cor do botão para cinza escuro
-      this.style.backgroundColor = '#ccc';
+  // Selecionar o botão pelo seu seletor CSS
+  var button = document.querySelector('.botao-inicial');
 
-      // Aguardar 1 segundo (1000 milissegundos) antes de executar a função
-      setTimeout(() => {
-        // Alterar a cor do botão de volta ao normal
-        this.style.backgroundColor = '';
-      }, 1000);
-    });
-    // Variável para guardar a altura da página A4 em pontosack
-    var alturaPagina = mmToPt(400);
-    var participantesOriginal = [];
-    var revertAllButton = document.querySelector('.reverter-personalizado');
+  // Adicionar um evento de clique ao botão
+  button.addEventListener('click', function () {
+    this.style.backgroundColor = '#ccc';
+
+    setTimeout(() => {
+      this.style.backgroundColor = '';
+    }, 1000);
+  });
+
+  // Variável para guardar a altura da página A4 em pontos
+  var alturaPagina = mmToPt(400);
+  var participantesOriginal = [];
+  var revertAllButton = document.querySelector('.reverter-personalizado');
 
     // Função para exibir os participantes na página
     function exibirParticipantes(participantes) {
@@ -346,27 +349,33 @@ participantes.forEach(function (participante) {
     document.getElementById('uploadButton').style.display = 'none';
 
     // Adicione um ouvinte de evento de alteração ao elemento fileInput
-    document.getElementById('fileInput').addEventListener('change', function () {
-      if (this.files.length > 0) {
-        var file = this.files[0];
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          var csvContent = e.target.result;
-          var lines = csvContent.split('\n');
-          var participantes = [];
+   document.getElementById('fileInput').addEventListener('change', function () {
+  if (this.files.length > 0) {
+    var file = this.files[0];
+    var reader = new FileReader();
 
-          // Pular as primeiras 12 linhas, pois elas não contêm dados dos participantes
-          for (var i = 12; i < lines.length; i++) {
-            // Usar vírgula como separador ao dividir a linha em células
-            participantes.push(row);
-          }
+    reader.onload = function (e) {
+      var csvContent = e.target.result;
+      var lines = csvContent.split('\n');
+      var participantes = [];
 
-          exibirParticipantes(participantes);
-        };
-        reader.readAsText(file);
+      // Pular as primeiras 12 linhas, pois elas não contêm dados dos participantes
+      for (var i = 12; i < lines.length; i++) {
+
+        // Evitar linhas vazias
+        if (lines[i].trim() !== "") {
+          var row = lines[i].split(',');
+          participantes.push(row);
+        }
+
       }
-    });
 
+      exibirParticipantes(participantes);
+    };
+
+    reader.readAsText(file);
+  }
+});
     document.getElementById('pdfButton').classList.add('button');
 
     // Função para gerar o PDF
