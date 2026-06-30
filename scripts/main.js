@@ -239,81 +239,48 @@ function exibirParticipantes(participantes) {
 
 
     participantes.forEach(function (p) {
-
         var nome = p[nomeIndex];
-
         var assistencia = p[assistenciaIndex];
 
-
-
-        // Filtros originais
-
-        if (nome && assistencia && nome !== 'User Name' && assistencia !== 'Quantas pessoas estão assistindo?' && !nome.toLowerCase().includes('tribuna') && nome !== 'Mesa de som') {
-
+        // --- AJUSTE AQUI ---
+        // Adicionada a verificação para ignorar nomes que contenham "convidado"
+        var eConvidado = nome.toLowerCase().includes('convidado');
+        
+        // Filtros originais + filtro de convidado
+        if (nome && assistencia && nome !== 'User Name' && assistencia !== 'Quantas pessoas estão assistindo?' && 
+            !nome.toLowerCase().includes('tribuna') && nome !== 'Mesa de som' && !eConvidado) {
+            
             var linha = document.createElement('tr');
-
             var jaAdicionado = nomesAdicionados[nome];
 
-
-
             if (!assistencia.includes('pessoa') || jaAdicionado) {
-
                 linha.appendChild(createCell('td', '<input type="checkbox" class="participante-checkbox">', false));
-
                 linha.classList.add('unchecked');
-
                 assistencia = 'Já informou';
-
             } else {
-
                 linha.appendChild(createCell('td', '<input type="checkbox" class="participante-checkbox" checked>', false));
-
                 nomesAdicionados[nome] = true;
-
             }
 
-
-
             var nomeTd = createCell('td', nome, true);
-
             nomeTd.classList.add('nome-participante');
-
             linha.appendChild(nomeTd);
 
-
-
             if (assistencia.startsWith('Já informei a assistência')) assistencia = 'Já Informou';
-
             
-
             var assistTd = createCell('td', assistencia, true);
-
             assistTd.addEventListener('click', function() { criarCampoDeEntrada(this); });
-
             linha.appendChild(assistTd);
 
-
-
-            // Clique no nome alterna checkbox
-
             nomeTd.addEventListener('click', function() {
-
                 var cb = linha.querySelector('.participante-checkbox');
-
                 cb.checked = !cb.checked;
-
                 linha.classList.toggle('unchecked', !cb.checked);
-
                 atualizarNumeroTotalPessoas();
-
             });
 
-
-
             tabela.appendChild(linha);
-
         }
-
     });
 
 
